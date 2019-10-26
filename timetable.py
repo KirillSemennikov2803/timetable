@@ -29,12 +29,12 @@ def setTimeTable(academicPlan:[str,[str,int]],teachers:[str,[str,int]]):
     if watchLack == dict():
         return watchLack
     schedule = [] # [str,[str,[[int,str,str]]]] [класс,[день недели,[урок,Предмет,препод]]
+    index = 0
     for clas in academicPlan:
-        index = 0
-        schedule.append([clas[0]])
+        schedule.append([clas[0],[]])
         index2 = 0;
         for i in range(5,0,-1):
-            schedule[index].append([dayOfweek(i),[]])
+            schedule[index][1].append([dayOfweek(i),[]])
             lessonInDay = round(academicPlanLessonClass[clas[0]] / i)
             academicPlanLessonClass[clas[0]] -= lessonInDay
             random.seed()
@@ -42,22 +42,21 @@ def setTimeTable(academicPlan:[str,[str,int]],teachers:[str,[str,int]]):
             lesson = clas[1][rand]
             startLesson = 0
             if lesson[1] >= 2 and startLesson + 2 <= lessonInDay:
-                schedule[index][1][1].append([startLesson + 1,lesson[0],""])
-                schedule[index][1][1].append([startLesson + 2, lesson[0], ""])
+                schedule[index][1][index2][1].append([startLesson + 1,lesson[0],""])
+                schedule[index][1][index2][1].append([startLesson + 2, lesson[0], ""])
                 startLesson+=2
                 clas[1][rand][1]-=2
                 if lesson[1] <= 0:
                     clas[1].remove(lesson)
-
             else:
-                schedule[index][1][1].append([startLesson+1, lesson[0], ""])
+                schedule[index][1][index2][1].append([startLesson+1, lesson[0], ""])
                 startLesson+=1
                 clas[1][rand][1] -= 1
                 if lesson[1] <= 0:
                     clas[1].remove(lesson)
             index2+=1
         index += 1
-    a = 1
+    return schedule
 
 def dayOfweek(a):
     if a == 5:
